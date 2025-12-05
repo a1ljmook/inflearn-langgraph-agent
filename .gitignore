@@ -1,4 +1,5 @@
 .env
+.venv/
 .python-version
 *_collection_*/
 # *_collection/
