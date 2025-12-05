@@ -1,5 +1,8 @@
 .env
 .venv/
+income_tax_collection/
+legacy/
+origiin/
 .python-version
 *_collection_*/
 # *_collection/
