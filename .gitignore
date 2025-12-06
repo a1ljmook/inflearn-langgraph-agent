@@ -2,7 +2,8 @@
 .venv/
 income_tax_collection/
 legacy/
-origiin/
+origin/
+real_estate_tax_collection/
 .python-version
 *_collection_*/
 # *_collection/
