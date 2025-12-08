@@ -1,8 +1,9 @@
 .env
 .venv/
-income_tax_collection/
 legacy/
 origin/
+chroma/
+income_tax_collection/
 real_estate_tax_collection/
 .python-version
 *_collection_*/
