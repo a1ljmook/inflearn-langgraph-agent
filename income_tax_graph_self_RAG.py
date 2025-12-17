@@ -90,6 +90,11 @@ doc_relevance_prompt = hub.pull("langchain-ai/rag-document-relevance")
 
 def is_doc_relevant(state: AgentState) -> Literal["relevant", "irrelevant"]:
     """
+    주어진 state를 기반으로 문서의 관련성을 판단합니다.
+    Args:
+        state (AgentState): 사용자의 질문과 문맥을 포함한 에이전트의 현재 state.
+    Returns:
+        Literal['relevant', 'irrelevant']: 문서가 관련성이 높으면 'relevant', 그렇지 않으면 'irrelevant'를 반환합니다.
     """
     print("is_doc_relevant")
     query = state["query"]
@@ -116,6 +121,11 @@ rewrite_prompt = PromptTemplate.from_template(template=template)
 
 def rewrite(state: AgentState) -> AgentState:
     """
+    사용자의 질문을 사전을 참고하여 변경합니다.
+    Args:
+        state (AgentState): 사용자의 질문을 포함한 에이전트의 현재 state.
+    Returns:
+        AgentState: 변경된 질문을 포함하는 state를 반환합니다.
     """
     print("rewrite")
     query = state["query"]
@@ -138,6 +148,11 @@ hallucination_llm = ChatOllama(model="llama3.1", temperature=0)
 
 def is_hallucinated(state: AgentState) -> Literal["hallucinated", "non-hallucinated"]:
     """
+    사용자의 질문에 기반하여 생성된 답변의 할루시네이션 여부를 평가합니다.
+    Args:
+        state (AgentState): 사용자의 질문과 생성된 답변을 포함한 에이전트의 현재 state.
+    Returns:
+        str: 답변이 할루시네이션이라고 판단되면 'hallucinated', 그렇지 않으면 'non-hallucinated'을 반환합니다.
     """
     print("is_hallucinated")
     context = state["context"]
@@ -164,6 +179,11 @@ helpful_prompt = hub.pull("langchain-ai/rag-answer-helpfulness")
 
 def is_helpful(state: AgentState) -> Literal["helpful", "unhelpful"]:
     """
+    사용자의 질문에 기반하여 생성된 답변의 유용성을 평가합니다.
+    Args:
+        state (AgentState): 사용자의 질문과 생성된 답변을 포함한 에이전트의 현재 state.
+    Returns:
+        str: 답변이 유용하다고 판단되면 'helpful', 그렇지 않으면 'unhelpful'을 반환합니다.
     """
     print("is_helpful")
     query = state["query"]
@@ -178,11 +198,13 @@ def is_helpful(state: AgentState) -> Literal["helpful", "unhelpful"]:
 
 def check_helpfulness(state: AgentState) -> AgentState:
     """
-    사용자의 질문에 기반하여 생성된 답변의 유용성을 평가합니다.
+    유용성을 확인하는 자리 표시자 함수입니다. 
+    graph에서 conditional_edge를 연속으로 사용하지 않고 node를 추가해
+    가독성을 높이기 위해 사용합니다
     Args:
-        state (AgentState): 사용자의 질문과 생성된 답변을 포함한 에이전트의 현재 state.
+        state (AgentState): 에이전트의 현재 state.
     Returns:
-        str: 답변이 유용하다고 판단되면 'helpful', 그렇지 않으면 'unhelpful'을 반환합니다.
+        AgentState: 변경되지 않은 state를 반환합니다.
     """
     print("check_helpfulness")
     return state

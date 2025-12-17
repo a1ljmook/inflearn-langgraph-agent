@@ -4,7 +4,7 @@
 # %%
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path="../.env")
 
 # %%
 from typing import TypedDict
@@ -55,7 +55,8 @@ retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 # %%
 from langchain_ollama import ChatOllama
 
-llm_llama32v = ChatOllama(model="llama3.2-vision")
+# llm_llama32v = ChatOllama(model="llama3.2-vision")
+llm_llama31 = ChatOllama(model="llama3.1")
 
 # %% [markdown]
 # - [rlm/rag-prompt](https://smith.langchain.com/hub/rlm/rag-prompt)
@@ -86,7 +87,7 @@ def get_tax_base_equation(state: AgentState) -> AgentState:
     tax_base_retrieval_chain = (
         {"question": RunnablePassthrough(), "context": retriever}
         | rag_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )
 
@@ -97,7 +98,7 @@ def get_tax_base_equation(state: AgentState) -> AgentState:
     tax_base_equation_chain = (
         {"tax_base_equation_information": RunnablePassthrough()}
         | tax_base_equation_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )
     
@@ -124,7 +125,7 @@ def get_tax_deduction(state: AgentState) -> AgentState:
     tax_deduction_chain = (
         {"question": RunnablePassthrough(), "context": retriever}
         | rag_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )    
     tax_deduction_question = "주택에 대한 종합부동산세 계산시 공제금액을 알려주세요"
@@ -164,7 +165,7 @@ def get_market_ratio(state: AgentState) -> AgentState:
     ])
     market_ratio_chain = (
         market_ratio_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )
     market_ratio = market_ratio_chain.invoke({"query": query, "context": context})
@@ -198,7 +199,7 @@ def calculate_tax_base(state: AgentState) -> AgentState:
     ])
     tax_base_chain = (
         tax_base_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )
     tax_base = tax_base_chain.invoke({
@@ -237,7 +238,7 @@ def calculate_tax_rate(state: AgentState) -> AgentState:
     ])
     tax_rate_chain = (
         tax_rate_prompt
-        | llm_llama32v
+        | llm_llama31
         | StrOutputParser()
     )
     tax_rate = tax_rate_chain.invoke({
@@ -265,5 +266,4 @@ workflow.add_edge("get_market_ratio", "calculate_tax_base")
 workflow.add_edge("calculate_tax_base", "calculate_tax_rate")
 
 # %%
-
 graph = workflow.compile()
